@@ -1,0 +1,4 @@
+server {
+  root /opt/app-root/src;
+  listen 0.0.0.0:8080;
+}

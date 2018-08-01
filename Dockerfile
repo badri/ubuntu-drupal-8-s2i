@@ -27,6 +27,7 @@ RUN apt-get update && apt-get install -y nginx \
 COPY ./s2i/bin/ /usr/libexec/s2i
 
 COPY ./files/nginx.conf /etc/nginx/
+COPY ./files/drupal /etc/nginx/conf.d/
 
 RUN useradd -u 1001 -r -g 0 -d ${HOME} -s /sbin/nologin -c "Default Application User" default && \
 mkdir -p ${HOME} && \
