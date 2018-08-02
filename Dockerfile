@@ -29,17 +29,16 @@ COPY ./s2i/bin/ /usr/libexec/s2i
 COPY ./files/nginx.conf /etc/nginx/
 COPY ./files/drupal /etc/nginx/conf.d/
 
-RUN groupadd --gid 1001 s2i && useradd --gid 1001 --uid 1001 -m s2i && \
+RUN useradd -u 1001 -r -g 0 -d ${HOME} -s /sbin/nologin -c "Default Application User" default && \
 mkdir -p ${HOME} && \
-chown -R 1001:1001 ${HOME}
+chown -R 1001:0 ${HOME}
 
 
-RUN chown -R 1001:1001 /usr/share/nginx
-RUN chown -R 1001:1001 /var/log/nginx
-RUN chown -R 1001:1001 /var/lib/nginx
-RUN touch /run/nginx.pid
-RUN chown -R 1001:1001 /run/nginx.pid
-RUN chown -R 1001:1001 /etc/nginx
+RUN chown -R 1001:0 /usr/share/nginx
+RUN chown -R 1001:0 /var/log/nginx && chmod -R g+rwX /var/log/nginx
+RUN chown -R 1001:0 /var/lib/nginx && chmod -R g+rwX /var/lib/nginx
+RUN chown -R 1001:0 /var/run && chmod -R g+rwX /var/run
+RUN chown -R 1001:0 /etc/nginx
 
 
 WORKDIR ${HOME}
