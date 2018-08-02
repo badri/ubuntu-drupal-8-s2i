@@ -1,6 +1,5 @@
 #!/bin/bash
 
 echo " -----> Run HTTP server."
-
+/usr/sbin/php-fpm7.1 --force-stderr --daemonize --fpm-config /etc/php/7.1/fpm/pool.d/www.conf
 exec nginx -g "daemon off;"
-
