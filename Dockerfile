@@ -51,11 +51,13 @@ RUN sed -i \
         -e "s/;listen.allowed_clients = 127.0.0.1/listen.allowed_clients = 127.0.0.1/g" \
 	-e "s/listen = \/run\/php\/php7.1-fpm.sock/listen = 127.0.0.1:9000/g" \
 	/etc/php/7.1/fpm/pool.d/www.conf
+RUN echo "clear_env=false" >> /etc/php/7.1/fpm/pool.d/www.conf
 
 RUN sed -i \
         -e "s/mysqli.default_socket =/mysqli.default_socket = \/var\/lib\/mysql\/mysql.sock/g" \
         -e "s/pdo_mysql.default_socket=/ pdo_mysql.default_socket=\/var\/lib\/mysql\/mysql.sock/g" \
         /etc/php/7.1/fpm/php.ini
+
 
 WORKDIR ${HOME}
 
