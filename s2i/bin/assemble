@@ -1,13 +1,4 @@
 #!/bin/bash -e
-#
-# S2I assemble script for the 'drupal-8' image.
-# The 'assemble' script builds your application source so that it is ready to run.
-#
-# For more information refer to the documentation:
-#	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
-#
-
-# If the 'drupal-8' assemble script is executed with the '-h' flag, print the usage.
 if [[ "$1" == "-h" ]]; then
 	exec /usr/libexec/s2i/usage
 fi
@@ -23,4 +14,10 @@ echo "---> Installing application source..."
 cp -Rf /tmp/src/. ./
 
 echo "---> Building application from source..."
-# TODO: Add build steps for your application, eg npm install, bundle install, pip install, etc.
+
+if [ -f composer.json ]; then
+	echo "---> Installing composer dependencies..."
+	composer install --no-dev --prefer-dist --no-interaction --no-ansi --optimize-autoloader
+	# Remove all .git directories to save space.
+	find . -name .git -type d -exec rm -rf {} +
+fi
