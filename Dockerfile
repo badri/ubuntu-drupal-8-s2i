@@ -49,7 +49,7 @@ RUN chown -R 1001:0 /usr/share/nginx
 RUN chown -R 1001:0 /var/log && chmod -R g+rwX /var/log
 RUN chown -R 1001:0 /var/lib/nginx && chmod -R g+rwX /var/lib/nginx
 RUN chown -R 1001:0 /var/run && chmod -R g+rwX /var/run
-RUN chown -R 1001:0 /etc/nginx
+RUN chown -R 1001:0 /etc/nginx && chmod -R g+rwX /etc/nginx
 RUN sed -i \
         -e "s/;listen.allowed_clients = 127.0.0.1/listen.allowed_clients = 127.0.0.1/g" \
 	-e "s/listen = \/run\/php\/php7.1-fpm.sock/listen = 127.0.0.1:9000/g" \
