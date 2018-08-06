@@ -1,5 +1,5 @@
 server {
-  root /opt/app-root/src;
+  root /opt/app-root/src/${DOCUMENTROOT};
   listen 0.0.0.0:8080;
   index index.php;
   location ~ \.php$ {

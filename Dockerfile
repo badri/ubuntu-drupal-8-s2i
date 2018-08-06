@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y nginx \
     && add-apt-repository -y ppa:ondrej/php && apt-get update \
     && apt-get -y install php7.1 php7.1-fpm php7.1-cli php7.1-common \
     php7.1-mbstring php7.1-soap php7.1-xml php7.1-zip php7.1-memcached php7.1-mysql \
-    wget libfreetype6-dev libjpeg-dev libpng-dev mysql-client curl \
+    wget libfreetype6-dev libjpeg-dev libpng-dev mysql-client curl gettext \
     && apt-get -y remove --purge software-properties-common python-software-properties \
     && apt-get -y autoremove && apt-get -y autoclean && apt-get clean && rm -rf /var/lib/apt/lists /tmp/* /var/tmp/*
 
@@ -32,8 +32,11 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 COPY ./s2i/bin/ /usr/libexec/s2i
 
+RUN mkdir -p /opt/app-root/etc/nginx && \
+    chown -R 1001:0 /opt/app-root/etc/nginx
+
 COPY ./files/nginx.conf /etc/nginx/
-COPY ./files/drupal /etc/nginx/conf.d/
+COPY ./files/drupal.template /opt/app-root/etc/nginx
 
 # code permissions
 
