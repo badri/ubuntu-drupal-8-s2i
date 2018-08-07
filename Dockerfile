@@ -22,8 +22,8 @@ RUN apt-get update && apt-get install -y nginx \
     && apt-get -y install software-properties-common python-software-properties \
     && add-apt-repository -y ppa:ondrej/php && apt-get update \
     && apt-get -y install php7.1 php7.1-fpm php7.1-cli php7.1-common \
-    php7.1-mbstring php7.1-soap php7.1-xml php7.1-zip php7.1-memcached php7.1-mysql \
-    wget libfreetype6-dev libjpeg-dev libpng-dev mysql-client curl gettext \
+    php7.1-mbstring php7.1-soap php7.1-xml php7.1-zip php7.1-memcached php7.1-mysql php7.1-gd php7.1-opcache \
+    wget libfreetype6-dev libjpeg-dev libpng-dev mysql-client curl gettext unzip \
     && apt-get -y remove --purge software-properties-common python-software-properties \
     && apt-get -y autoremove && apt-get -y autoclean && apt-get clean && rm -rf /var/lib/apt/lists /tmp/* /var/tmp/*
 
