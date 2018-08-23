@@ -19,6 +19,14 @@ metadata:
     template.openshift.io/bindable: "false"
   name: drupal-8
 objects:
+- kind: Secret
+  apiVersion: v1
+  metadata:
+    name: "${NAME}"
+  stringData:
+    database-user: "${MYSQL_USER}"
+    database-password: "${MYSQL_PASSWORD}"
+    database-root-password: "${MYSQL_ROOT_PASSWORD}"
 - apiVersion: v1
   kind: BuildConfig
   metadata:
@@ -39,7 +47,7 @@ objects:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: openshift-drupal:v9
+          name: openshift-drupal:v11
           namespace: ${NAMESPACE}
       type: Source
     triggers:
@@ -76,24 +84,21 @@ objects:
         containers:
         - env:
           - name: MYSQL_HOST
-            value: ${MYSQL_SERVICE_NAME}
+            value: "${MYSQL_SERVICE_NAME}"
           - name: MYSQL_PORT
             value: "3306"
           - name: MYSQL_DATABASE
-            valueFrom:
-              secretKeyRef:
-                key: database-name
-                name: mysql
+            value: "${MYSQL_DATABASE}"
           - name: MYSQL_USER
             valueFrom:
               secretKeyRef:
                 key: database-user
-                name: mysql
+                name: "${NAME}"
           - name: MYSQL_PASSWORD
             valueFrom:
               secretKeyRef:
                 key: database-password
-                name: mysql
+                name: "${NAME}"
           image: ' '
           imagePullPolicy: Always
           name: env-clear
@@ -143,22 +148,19 @@ objects:
             valueFrom:
               secretKeyRef:
                 key: database-user
-                name: mysql
+                name: "${NAME}"
           - name: MYSQL_PASSWORD
             valueFrom:
               secretKeyRef:
                 key: database-password
-                name: mysql
+                name: "${NAME}"
           - name: MYSQL_ROOT_PASSWORD
             valueFrom:
               secretKeyRef:
                 key: database-root-password
-                name: mysql
+                name: "${NAME}"
           - name: MYSQL_DATABASE
-            valueFrom:
-              secretKeyRef:
-                key: database-name
-                name: mysql
+            value: "${MYSQL_DATABASE}"
           image: ' '
           livenessProbe:
             failureThreshold: 3
@@ -329,6 +331,11 @@ parameters:
   name: MYSQL_USER
   required: true
   value: drupal8
+- name: MYSQL_ROOT_PASSWORD
+  displayName: MySQL root user Password
+  description: Password for the MySQL root user.
+  generate: expression
+  from: "[a-zA-Z0-9]{16}"
 - displayName: Database Password
   from: '[a-zA-Z0-9]{16}'
   generate: expression
