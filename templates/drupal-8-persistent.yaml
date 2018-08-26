@@ -47,7 +47,7 @@ objects:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: openshift-drupal:v12
+          name: openshift-drupal:v13
           namespace: ${NAMESPACE}
       type: Source
     triggers:
